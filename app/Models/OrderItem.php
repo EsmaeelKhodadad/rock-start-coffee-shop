@@ -16,9 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read BelongsTo $order
- * @property-read BelongsTo $product
- * @property-read BelongsTo $customization
- * @property-read BelongsTo $option
+ * @property-read Product $product
+ * @property-read Customization $customization
+ * @property-read Option $option
+ * @property-read string $human_readable_order
+ * @property-read int $price
  */
 class OrderItem extends AppModel
 {
@@ -28,6 +30,29 @@ class OrderItem extends AppModel
      * @var string[]
      */
     protected $guarded = ['id'];
+    /**
+     * @var string[]
+     */
+    protected $appends = ['human_readable_order', 'price'];
+
+    /**
+     * @return string
+     */
+    public function getHumanReadableOrderAttribute(): string
+    {
+        $productTitle = $this->product->title;
+        $customizationTitle = $this->customization->title ? ' => ' . $this->customization->title : '';
+        $optionTitle = $this->option->title ? ' => ' . $this->option->title : '';
+        return $productTitle . $customizationTitle . $optionTitle;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriceAttribute():int
+    {
+        return ($this->product->price * $this->number);
+    }
 
     /**
      * @return BelongsTo

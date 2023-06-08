@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $id
  * @property int $user_id
+ * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read BelongsTo $user
- * @property-read HasMany orderItems
+ * @property-read HasMany $orderItems
  */
 class Order extends AppModel
 {

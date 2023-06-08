@@ -4,6 +4,7 @@ namespace App\Services\Implementations;
 
 use App\DTO\OrderStoreDTO;
 use App\DTO\OrderViewDTO;
+use App\Models\Order;
 use App\Repositories\MySQL\Interfaces\OrderMySQLRepositoryInterface;
 use App\Requests\OrderStoreRequest;
 use App\Resources\V1\OrderViewResource;
@@ -45,16 +46,37 @@ class OrderService implements OrderServiceInterface
     /**
      * @inheritDoc
      */
-    public function getAllUserOrders(int $userId):AnonymousResourceCollection
+    public function getAllUserOrders(int $userId): AnonymousResourceCollection
     {
-        try{
+        try {
             $userViewDTo = $this->userService->getById($userId);
             $orders = $this->orderMySQLRepository->getAllByUserId($userViewDTo->getId());
             return OrderViewResource::collection($orders);
-        }
-        catch(\Throwable $throwable){
+        } catch (\Throwable $throwable) {
             throw new RuntimeException($throwable->getMessage());
         }
+    }
+
+    public function getTotalPriceById(int $orderId): int
+    {
+        try {
+            return $this->orderItemService->getTotalPriceByOrderId($orderId);
+        } catch (\Throwable $throwable) {
+            throw new RuntimeException($throwable->getMessage());
+        }
+    }
+
+    /**
+     * @param int $orderId
+     * @return OrderViewDTO
+     */
+    public function getById(int $orderId): OrderViewDTO
+    {
+        $order = $this->orderMySQLRepository->getById($orderId);
+        if (!$order instanceof Order) {
+            throw new RuntimeException('Order not found!');
+        }
+        return OrderTransformer::orderModelToViewDTO($order);
     }
 
     /**

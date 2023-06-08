@@ -22,6 +22,9 @@ class OrderMySQLRepository extends BaseRepository implements OrderMySQLRepositor
      */
     public function getAllByUserId(int $userId): LengthAwarePaginator
     {
-        return $this->model->where('user_id', $userId)->with('user', 'orderItems', 'orderItems.product', 'orderItems.customization', 'orderItems.option')->paginate(10);
+        return $this->model
+            ->where('user_id', $userId)
+            ->with('user', 'orderItems', 'orderItems.product')
+            ->paginate(10);
     }
 }

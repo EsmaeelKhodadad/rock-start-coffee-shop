@@ -17,20 +17,10 @@ class OrderItemResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'order_id' => $this->id,
-            'product' => [
-                'id' => $this->product->id,
-                'title' => $this->product->title,
-            ],
-            'customization' => $this->customization ? [
-                'id' => $this->customization->id,
-                'title' => $this->customization->title,
-            ] : [],
-            'option_id' => $this->option ? [
-                'id' => $this->option->id,
-                'title' => $this->option->title,
-            ] : [],
+            'id' => $this->id,
+            'human_readable_order' => $this->human_readable_order,
             'number' => $this->number,
+            'price' => $this->price,
         ];
     }
 }

@@ -37,4 +37,9 @@ class OrderItemService implements OrderItemServiceInterface
             throw new RuntimeException($throwable->getMessage());
         }
     }
+
+    public function getTotalPriceByOrderId(int $orderId): int
+    {
+        return $this->orderItemMySQLRepository->getPriceSumByOrderId($orderId);
+    }
 }
