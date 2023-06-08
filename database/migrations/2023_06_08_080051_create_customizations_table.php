@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Customization;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +12,12 @@ class CreateCustomizationsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('customizations', function (Blueprint $table) {
+        Schema::create((new Customization())->getTable(), static function (Blueprint $table) {
             $table->id();
+            $table->string('title')->unique();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -24,7 +27,7 @@ class CreateCustomizationsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('customizations');
     }
