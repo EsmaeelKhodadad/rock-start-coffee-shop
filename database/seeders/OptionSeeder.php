@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Option;
 use Illuminate\Database\Seeder;
 
 class OptionSeeder extends Seeder
@@ -11,8 +12,28 @@ class OptionSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        //
+        $sampleOptions = [
+            'skim',
+            'semi',
+            'whole',
+            'small',
+            'medium',
+            'large',
+            'single',
+            'double',
+            'triple',
+            'chocolate chip',
+            'ginger',
+            'take away',
+            'in shop',
+        ];
+
+        foreach ($sampleOptions as $sampleOption) {
+            Option::create([
+                'title' => $sampleOption,
+            ]);
+        }
     }
 }

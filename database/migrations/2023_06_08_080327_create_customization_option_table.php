@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\Customization;
+use App\Models\Option;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductCustomizationTable extends Migration
+class CreateCustomizationOptionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +16,12 @@ class CreateProductCustomizationTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_customization', static function (Blueprint $table) {
-            $table->unsignedBigInteger('product_id');
+        Schema::create('customization_option', static function (Blueprint $table) {
             $table->unsignedBigInteger('customization_id');
+            $table->unsignedBigInteger('option_id');
 
-            $table->foreign('product_id')->references('id')->on((new Product())->getTable());
             $table->foreign('customization_id')->references('id')->on((new Customization())->getTable());
+            $table->foreign('option_id')->references('id')->on((new Option())->getTable());
         });
     }
 

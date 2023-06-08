@@ -17,8 +17,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create((new Order())->getTable(), static function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default(Order::STATUS_WAITING);
-            $table->unsignedBigInteger('user_id');
+            $table->string('status')->default(Order::STATUS_WAITING)->index();
+            $table->unsignedBigInteger('user_id')->index();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on((new User())->getTable());

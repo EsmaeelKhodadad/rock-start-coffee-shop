@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customization;
 use Illuminate\Database\Seeder;
 
 class CustomizationSeeder extends Seeder
@@ -11,8 +12,20 @@ class CustomizationSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run():void
     {
-        //
+        $sampleCustomizations = [
+            'Milk',
+            'Size',
+            'Shots',
+            'Kind',
+            'Consume location',
+        ];
+
+        foreach($sampleCustomizations as $sampleCustomization){
+            Customization::create([
+                'title' => $sampleCustomization,
+            ]);
+        }
     }
 }
