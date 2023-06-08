@@ -15,7 +15,7 @@ class CreateProductCustomizationTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_customization', static function (Blueprint $table) {
+        Schema::create('customization_product', static function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('customization_id');
 

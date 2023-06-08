@@ -27,7 +27,7 @@ class ProductCustomizationSeeder extends Seeder
         foreach ($lookup as $key => $item) {
             $productId = Product::active()->whereTitle($key)->first()->id;
             $customizationId = Customization::active()->whereTitle($item)->first()->id;
-            DB::table('product_customization')->insert([
+            DB::table('customization_product')->insert([
                 'product_id' => $productId,
                 'customization_id' => $customizationId,
             ]);
