@@ -10,7 +10,6 @@ use App\DTO\OrderViewDTO;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Requests\OrderStoreRequest;
-use App\Resources\V1\OrderItemResource;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderTransformer
@@ -50,13 +49,14 @@ class OrderTransformer
     }
 
     /**
+     * @param int $orderId
      * @param array $item
      * @return OrderItemDTO
      */
-    public static function toOrderItemStoreDTO(array $item): OrderItemDTO
+    public static function toOrderItemStoreDTO(int $orderId, array $item): OrderItemDTO
     {
         return (new OrderItemDTO())
-            ->setOrderId($item['order_id'])
+            ->setOrderId($orderId)
             ->setProductId($item['product_id'])
             ->setNumber($item['number'])
             ->setCustomizationId($item['customization_id'] ?? null)
@@ -70,8 +70,8 @@ class OrderTransformer
      */
     public static function toOrderAlongWithItemsStoreDTO(int $orderId, OrderStoreRequest $orderStoreRequest): OrderAlongWithItemsStoreDTO
     {
-        $orderItems = array_map(static function ($item) {
-            return self::toOrderItemStoreDTO($item);
+        $orderItems = array_map(static function ($item) use ($orderId) {
+            return self::toOrderItemStoreDTO($orderId, $item);
         }, $orderStoreRequest->order_items);
 
         return (new OrderAlongWithItemsStoreDTO())
@@ -86,10 +86,11 @@ class OrderTransformer
     public static function orderModelToViewDTO(Model $order): OrderViewDTO
     {
         return (new OrderViewDTO())
-            ->setUserId($order->getAttribute('id'))
-            ->setStatus($order->getAttribute('status'))
-            ->setCreatedAt($order->getAttribute('created_at'))
-            ->setUpdatedAt($order->getAttribute('updated_at'));
+            ->setId($order->id)
+            ->setUserId($order->user_id)
+            ->setStatus($order->status)
+            ->setCreatedAt($order->created_at)
+            ->setUpdatedAt($order->updated_at);
     }
 
     /**

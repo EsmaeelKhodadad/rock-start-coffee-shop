@@ -24,4 +24,13 @@ class BaseRepository implements BaseRepositoryInterface
         $model->save();
         return $model->fresh();
     }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function getById(int $id)
+    {
+        return $this->model->find($id);
+    }
 }

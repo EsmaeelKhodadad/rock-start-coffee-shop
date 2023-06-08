@@ -6,9 +6,13 @@ use App\DTO\OrderStoreDTO;
 use App\DTO\OrderViewDTO;
 use App\Repositories\MySQL\Interfaces\OrderMySQLRepositoryInterface;
 use App\Requests\OrderStoreRequest;
+use App\Resources\V1\OrderViewResource;
 use App\Services\Interfaces\OrderItemServiceInterface;
 use App\Services\Interfaces\OrderServiceInterface;
+use App\Services\Interfaces\UserServiceInterface;
 use App\Transformers\OrderTransformer;
+use http\Exception\RuntimeException;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
 class OrderService implements OrderServiceInterface
@@ -21,15 +25,36 @@ class OrderService implements OrderServiceInterface
      * @var OrderItemServiceInterface
      */
     private $orderItemService;
+    /**
+     * @var UserServiceInterface
+     */
+    private $userService;
 
     /**
      * @param OrderMySQLRepositoryInterface $orderMySQLRepository
      * @param OrderItemServiceInterface $orderItemService
+     * @param UserServiceInterface $userService
      */
-    public function __construct(OrderMySQLRepositoryInterface $orderMySQLRepository, OrderItemServiceInterface $orderItemService)
+    public function __construct(OrderMySQLRepositoryInterface $orderMySQLRepository, OrderItemServiceInterface $orderItemService, UserServiceInterface $userService)
     {
         $this->orderMySQLRepository = $orderMySQLRepository;
         $this->orderItemService = $orderItemService;
+        $this->userService = $userService;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllUserOrders(int $userId):AnonymousResourceCollection
+    {
+        try{
+            $userViewDTo = $this->userService->getById($userId);
+            $orders = $this->orderMySQLRepository->getAllByUserId($userViewDTo->getId());
+            return OrderViewResource::collection($orders);
+        }
+        catch(\Throwable $throwable){
+            throw new RuntimeException($throwable->getMessage());
+        }
     }
 
     /**

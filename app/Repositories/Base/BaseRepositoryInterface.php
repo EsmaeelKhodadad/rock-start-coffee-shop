@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Base;
 
-use App\DTO\BaseDTO;
 use Illuminate\Database\Eloquent\Model;
 
 interface BaseRepositoryInterface
@@ -12,4 +11,10 @@ interface BaseRepositoryInterface
      * @return Model
      */
     public function create(Model $model): Model;
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function getById(int $id);
 }

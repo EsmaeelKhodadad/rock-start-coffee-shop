@@ -25,6 +25,16 @@ class OrderController extends Controller
     }
 
     /**
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $userId = Auth::loginUsingId(2)->getAuthIdentifier();
+        $orders = $this->orderService->getAllUserOrders($userId);
+        return response()->json($orders->toArray(request()));
+    }
+
+    /**
      * @param OrderStoreRequest $orderStoreRequest
      * @return JsonResponse
      */
