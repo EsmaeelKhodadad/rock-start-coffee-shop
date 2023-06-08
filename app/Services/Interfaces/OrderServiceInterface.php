@@ -2,13 +2,16 @@
 
 namespace App\Services\Interfaces;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\DTO\OrderStoreDTO;
+use App\DTO\OrderViewDTO;
+use App\Requests\OrderStoreRequest;
 
 interface OrderServiceInterface
 {
     /**
-     * @return AnonymousResourceCollection
+     * @param OrderStoreDTO $orderStoreDTO
+     * @param OrderStoreRequest $orderStoreRequest
+     * @return OrderViewDTO
      */
-    public function create(Model $model);
+    public function create(OrderStoreDTO $orderStoreDTO, OrderStoreRequest $orderStoreRequest): OrderViewDTO;
 }

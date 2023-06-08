@@ -31,5 +31,7 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $orderStoreRequest): JsonResponse
     {
         $orderStoreDTO = OrderTransformer::toOrderStoreDTO(Auth::loginUsingId(2)->getAuthIdentifier());
+        $this->orderService->create($orderStoreDTO, $orderStoreRequest);
+        return response()->json(['created']);
     }
 }

@@ -4,6 +4,9 @@ namespace App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property array $order_items
+ */
 class OrderStoreRequest extends FormRequest
 {
     /**
