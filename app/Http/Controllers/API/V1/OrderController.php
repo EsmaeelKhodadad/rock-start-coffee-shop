@@ -66,6 +66,6 @@ class OrderController extends BaseController
     public function delete(int $orderId): JsonResponse
     {
         $this->orderService->deleteById($orderId);
-        return $this->response([], ResponseAlias::HTTP_NO_CONTENT, 'Deleted');
+        return $this->response([], ResponseAlias::HTTP_OK, 'Deleted');
     }
 }

@@ -142,7 +142,7 @@ class OrderService implements OrderServiceInterface
         try {
             $order = $this->orderMySQLRepository->getById($orderId);
             if (!$order instanceof Order) {
-                throw new RuntimeException('Order not found!');
+                throw new \RuntimeException('Order not found!');
             }
             $orderUpdatedModel = OrderTransformer::orderUpdateDTOToModel($order, $orderUpdateDTO);
             $orderUpdatedModel = $this->orderMySQLRepository->update($orderUpdatedModel);

@@ -1,4 +1,4 @@
-## Rock Start Coffee Shop
+## -- Rock Start Coffee Shop
 
 ## Run below commands to boot : 
 
@@ -11,4 +11,5 @@
 ## Hints
 
 - **Only one test is written because of personal lack of time.**
+- **Postman API export is available in the root path of the project (Rock start coffee shop.postman_collection.json).**
 
