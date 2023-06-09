@@ -28,11 +28,6 @@ class CreateOrderItemsTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('order_id')->references('id')->on((new Order())->getTable());
-            $table->foreign('product_id')->references('id')->on((new Product())->getTable());
-            $table->foreign('customization_id')->references('id')->on((new Customization())->getTable());
-            $table->foreign('option_id')->references('id')->on((new Option())->getTable());
         });
     }
 

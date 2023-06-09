@@ -12,10 +12,11 @@ class ProductMySQLRepository extends BaseRepository implements ProductMySQLRepos
 {
     /**
      * @param Product $product
+     * @param string|null $connection
      */
-    public function __construct(Product $product)
+    public function __construct(Product $product, string $connection = null)
     {
-        parent::__construct($product);
+        parent::__construct($product, $connection ?? config('database.default'));
     }
 
     /**

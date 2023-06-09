@@ -68,6 +68,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //========================================== Scope methods ==========================================
+
     /**
      * Scope a query to only include active users.
      *
@@ -78,6 +80,8 @@ class User extends Authenticatable
     {
         $query->where('is_active', true);
     }
+
+    //========================================== Relationships ==========================================
 
     /**
      * @return HasMany

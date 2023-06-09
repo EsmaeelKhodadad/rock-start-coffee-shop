@@ -19,9 +19,6 @@ class CreateCustomizationOptionTable extends Migration
         Schema::create('customization_option', static function (Blueprint $table) {
             $table->unsignedBigInteger('customization_id');
             $table->unsignedBigInteger('option_id');
-
-            $table->foreign('customization_id')->references('id')->on((new Customization())->getTable());
-            $table->foreign('option_id')->references('id')->on((new Option())->getTable());
         });
     }
 

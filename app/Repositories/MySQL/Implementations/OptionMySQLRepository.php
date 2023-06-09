@@ -11,10 +11,11 @@ class OptionMySQLRepository extends BaseRepository implements OptionMySQLReposit
 {
     /**
      * @param Option $option
+     * @param string|null $connection
      */
-    public function __construct(Option $option)
+    public function __construct(Option $option, string $connection = null)
     {
-        parent::__construct($option);
+        parent::__construct($option, $connection ?? config('database.default'));
     }
 
     /**

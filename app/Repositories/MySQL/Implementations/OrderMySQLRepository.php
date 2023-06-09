@@ -11,10 +11,11 @@ class OrderMySQLRepository extends BaseRepository implements OrderMySQLRepositor
 {
     /**
      * @param Order $order
+     * @param string|null $connection
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, string $connection = null)
     {
-        parent::__construct($order);
+        parent::__construct($order, $connection ?? config('database.default'));
     }
 
     /**

@@ -10,10 +10,11 @@ class OrderItemMySQLRepository extends BaseRepository implements OrderItemMySQLR
 {
     /**
      * @param OrderItem $orderItem
+     * @param string|null $connection
      */
-    public function __construct(OrderItem $orderItem)
+    public function __construct(OrderItem $orderItem, string $connection = null)
     {
-        parent::__construct($orderItem);
+        parent::__construct($orderItem, $connection ?? config('database.default'));
     }
 
     /**

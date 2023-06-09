@@ -18,9 +18,6 @@ class CreateProductCustomizationTable extends Migration
         Schema::create('customization_product', static function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('customization_id');
-
-            $table->foreign('product_id')->references('id')->on((new Product())->getTable());
-            $table->foreign('customization_id')->references('id')->on((new Customization())->getTable());
         });
     }
 

@@ -11,10 +11,11 @@ class UserMySQLRepository extends BaseRepository implements UserMySQLRepositoryI
 {
     /**
      * @param User $user
+     * @param string|null $connection
      */
-    public function __construct(User $user)
+    public function __construct(User $user, string $connection = null)
     {
-        parent::__construct($user);
+        parent::__construct($user, $connection ?? config('database.default'));
     }
 
     /**

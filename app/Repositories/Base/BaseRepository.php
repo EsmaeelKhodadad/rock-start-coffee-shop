@@ -19,10 +19,10 @@ class BaseRepository implements BaseRepositoryInterface
      */
     public $connection;
 
-    public function __construct(Model $model, string $connection = self::CONNECTION_MYSQL)
+    public function __construct(Model $model, string $connection = null)
     {
         $this->model = $model;
-        $this->connection = $connection;
+        $this->connection = $connection ?? config('database.default');
     }
 
     /**

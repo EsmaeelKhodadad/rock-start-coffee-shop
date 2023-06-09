@@ -23,6 +23,8 @@ class Customization extends AppModel
      */
     protected $guarded = ['id'];
 
+    //========================================== Relationships ==========================================
+
     /**
      * @return BelongsToMany
      */

@@ -11,10 +11,11 @@ class CustomizationMySQLRepository extends BaseRepository implements Customizati
 {
     /**
      * @param Customization $customization
+     * @param string|null $connection
      */
-    public function __construct(Customization $customization)
+    public function __construct(Customization $customization, string $connection = null)
     {
-        parent::__construct($customization);
+        parent::__construct($customization, $connection ?? config('database.default'));
     }
 
     /**

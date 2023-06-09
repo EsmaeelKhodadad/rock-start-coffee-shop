@@ -55,6 +55,8 @@ class Order extends AppModel
      */
     protected $appends = ['total_price'];
 
+    //========================================== Relationships ==========================================
+
     /**
      * @return BelongsTo
      */

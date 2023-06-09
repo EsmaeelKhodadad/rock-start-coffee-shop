@@ -36,6 +36,8 @@ class OrderItem extends AppModel
      */
     protected $appends = ['human_readable_order'];
 
+    //========================================== Accessors ==========================================
+
     /**
      * @return string
      */
@@ -57,6 +59,8 @@ class OrderItem extends AppModel
         }
         return 0;
     }
+
+    //========================================== Relationships ==========================================
 
     /**
      * @return BelongsTo

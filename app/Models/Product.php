@@ -30,6 +30,8 @@ class Product extends AppModel
      */
     protected $guarded = ['id'];
 
+    //========================================== Relationships ==========================================
+
     /**
      * @return BelongsToMany
      */

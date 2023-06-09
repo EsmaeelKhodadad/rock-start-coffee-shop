@@ -22,8 +22,6 @@ class CreateProductsTable extends Migration
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('price')->default(Product::CONSTANT_PRICE);
             $table->timestamps();
-
-            $table->foreign('creator_id')->references('id')->on((new User())->getTable());
         });
     }
 
