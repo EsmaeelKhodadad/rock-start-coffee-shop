@@ -18,4 +18,10 @@ interface OrderItemServiceInterface
      * @return int
      */
     public function getTotalPriceByOrderId(int $orderId): int;
+
+    /**
+     * @param int $orderId
+     * @return void
+     */
+    public function deleteByOrderId(int $orderId):void;
 }

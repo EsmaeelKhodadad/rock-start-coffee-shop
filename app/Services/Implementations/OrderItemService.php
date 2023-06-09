@@ -75,4 +75,12 @@ class OrderItemService implements OrderItemServiceInterface
     {
         return $this->orderItemMySQLRepository->getPriceSumByOrderId($orderId);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteByOrderId(int $orderId):void
+    {
+        $this->orderItemMySQLRepository->deleteByOrderId($orderId);
+    }
 }

@@ -19,7 +19,9 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->string('status')->default(Order::STATUS_WAITING)->index();
             $table->unsignedBigInteger('user_id')->index();
+
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on((new User())->getTable());
         });

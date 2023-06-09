@@ -17,6 +17,12 @@ interface OrderServiceInterface
     public function create(OrderStoreDTO $orderStoreDTO, OrderStoreRequest $orderStoreRequest): OrderViewDTO;
 
     /**
+     * @param int $orderId
+     * @return mixed
+     */
+    public function deleteById(int $orderId);
+
+    /**
      * @param int $userId
      * @return AnonymousResourceCollection
      */

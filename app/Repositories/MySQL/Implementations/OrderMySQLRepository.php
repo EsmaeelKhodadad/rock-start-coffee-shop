@@ -27,4 +27,21 @@ class OrderMySQLRepository extends BaseRepository implements OrderMySQLRepositor
             ->with('user', 'orderItems', 'orderItems.product')
             ->paginate(10);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getByOrderIdAndUserId(int $orderId, int $userId)
+    {
+        return $this->model->where('id', $orderId)->where('user_id', $userId)->first();
+    }
+
+    /**
+     * @param int $orderId
+     * @return void
+     */
+    public function deleteById(int $orderId): void
+    {
+        $this->model->where('id', $orderId)->delete();
+    }
 }

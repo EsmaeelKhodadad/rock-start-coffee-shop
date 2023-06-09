@@ -17,4 +17,10 @@ interface BaseRepositoryInterface
      * @return mixed
      */
     public function getById(int $id);
+
+    /**
+     * @param Model $model
+     * @return Model
+     */
+    public function update(Model $model):Model;
 }

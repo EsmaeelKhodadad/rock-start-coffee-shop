@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Services\Interfaces\ProductServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class ProductController extends Controller
+class ProductController extends BaseController
 {
     /**
      * @var ProductServiceInterface
@@ -27,6 +27,6 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         $products = $this->productService->getAllWithCustomizationsAndOptions();
-        return response()->json($products->toArray(request()));
+        return $this->response($products->toArray(request()));
     }
 }

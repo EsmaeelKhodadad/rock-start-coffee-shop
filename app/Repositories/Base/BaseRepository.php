@@ -33,4 +33,13 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->find($id);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function update(Model $model):Model
+    {
+        $model->save();
+        return $model->fresh();
+    }
 }

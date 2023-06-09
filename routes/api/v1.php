@@ -11,5 +11,9 @@ Route::group([], static function () {
     Route::prefix('orders')->group(static function () {
         Route::post('/', [OrderController::class, 'store']);
         Route::get('/', [OrderController::class, 'index']);
+        Route::delete('/{order_id}/cancel', [OrderController::class, 'delete']);
+        Route::middleware('admin')->group(static function () {
+            Route::patch('/{order_id}', [OrderController::class, 'update']);
+        });
     });
 });

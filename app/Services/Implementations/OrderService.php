@@ -3,20 +3,19 @@
 namespace App\Services\Implementations;
 
 use App\DTO\OrderStoreDTO;
+use App\DTO\OrderUpdateDTO;
 use App\DTO\OrderViewDTO;
 use App\Models\Order;
 use App\Repositories\MySQL\Interfaces\OrderMySQLRepositoryInterface;
 use App\Requests\OrderStoreRequest;
 use App\Resources\V1\OrderViewResource;
-use App\Services\Interfaces\CustomizationServiceInterface;
-use App\Services\Interfaces\OptionServiceInterface;
 use App\Services\Interfaces\OrderItemServiceInterface;
 use App\Services\Interfaces\OrderServiceInterface;
-use App\Services\Interfaces\ProductServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Transformers\OrderTransformer;
 use http\Exception\RuntimeException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService implements OrderServiceInterface
@@ -41,8 +40,8 @@ class OrderService implements OrderServiceInterface
      */
     public function __construct(
         OrderMySQLRepositoryInterface $orderMySQLRepository,
-        OrderItemServiceInterface $orderItemService,
-        UserServiceInterface $userService
+        OrderItemServiceInterface     $orderItemService,
+        UserServiceInterface          $userService
     )
     {
         $this->orderMySQLRepository = $orderMySQLRepository;
@@ -94,7 +93,7 @@ class OrderService implements OrderServiceInterface
         try {
             DB::beginTransaction();
             $doesUserExist = $this->userService->doesIdExist($orderStoreDTO->getUserId());
-            if(!$doesUserExist){
+            if (!$doesUserExist) {
                 throw new RuntimeException('User not found!');
             }
             $orderPreparedModel = OrderTransformer::orderStoreDTOToModel($orderStoreDTO);
@@ -110,5 +109,44 @@ class OrderService implements OrderServiceInterface
             DB::rollBack();
             throw new \RuntimeException($throwable->getMessage());
         }
+    }
+
+    /**
+     * @param int $orderId
+     * @return void
+     */
+    public function deleteById(int $orderId):void
+    {
+        try {
+            DB::beginTransaction();
+            $userId = Auth::loginUsingId(2)->getAuthIdentifier();
+            $order = $this->orderMySQLRepository->getByOrderIdAndUserId($orderId,$userId);
+            if(!$order instanceof Order){
+                throw new RuntimeException('Order not found!');
+            }
+            $this->orderMySQLRepository->deleteById($orderId);
+            $this->orderItemService->deleteByOrderId($orderId);
+            DB::commit();
+        } catch (\Throwable $throwable) {
+            DB::rollBack();
+            throw new RuntimeException($throwable->getMessage());
+        }
+    }
+
+    public function updateById(int $orderId, OrderUpdateDTO $orderUpdateDTO)
+    {
+        try{
+            $order = $this->orderMySQLRepository->getById($orderId);
+            if(!$order instanceof Order){
+                throw new RuntimeException('Order not found!');
+            }
+            $orderUpdatedModel = OrderTransformer::orderUpdateDTOToModel($order,$orderUpdateDTO);
+            $orderUpdatedModel = $this->orderMySQLRepository->update($orderUpdatedModel);
+            return OrderTransformer::orderModelToViewDTO($orderUpdatedModel);
+        }
+        catch(\Throwable $throwable){
+            throw new RuntimeException($throwable->getMessage());
+        }
+
     }
 }

@@ -6,10 +6,12 @@ use App\DTO\OrderAlongWithItemsStoreDTO;
 use App\DTO\OrderItemDTO;
 use App\DTO\OrderItemViewDTO;
 use App\DTO\OrderStoreDTO;
+use App\DTO\OrderUpdateDTO;
 use App\DTO\OrderViewDTO;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Requests\OrderStoreRequest;
+use App\Requests\OrderUpdateRequest;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderTransformer
@@ -108,5 +110,23 @@ class OrderTransformer
             ->setNumber($orderItem->number)
             ->setCreatedAt($orderItem->created_at)
             ->setCreatedAt($orderItem->updated_at);
+    }
+
+    /**
+     * @param int $orderId
+     * @param OrderUpdateRequest $orderUpdateRequest
+     * @return OrderUpdateDTO
+     */
+    public static function toOrderUpdateDTO(int $orderId, OrderUpdateRequest $orderUpdateRequest): OrderUpdateDTO
+    {
+        return (new OrderUpdateDTO())
+            ->setStatus($orderUpdateRequest->status);
+    }
+
+    public static function orderUpdateDTOToModel(Order $order, OrderUpdateDTO $orderUpdateDTO): Model
+    {
+        $order->status = $orderUpdateDTO->getStatus() ?? $order->status;
+        $order->user_id = $orderUpdateDTO->getUserId() ?? $order->user_id;
+        return $order;
     }
 }

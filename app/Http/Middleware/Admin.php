@@ -21,11 +21,11 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
-        if (!$user) {
+        $admin = Auth::loginUsingId(1);
+        if (!$admin) {
             throw new \RuntimeException('This route is protected!');//must be 401
         }
-        if ($user->user_type !== User::TYPE_ADMIN) {
+        if ($admin->user_type !== User::TYPE_ADMIN) {
             throw new \RuntimeException('You are not allowed to access this route!');//must be 403
         }
         return $next($request);

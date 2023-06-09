@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Requests\OrderStoreRequest;
+use App\Requests\OrderUpdateRequest;
 use App\Services\Interfaces\OrderServiceInterface;
 use App\Transformers\OrderTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class OrderController extends Controller
+class OrderController extends BaseController
 {
     /**
      * @var OrderServiceInterface
@@ -31,7 +33,7 @@ class OrderController extends Controller
     {
         $userId = Auth::loginUsingId(2)->getAuthIdentifier();
         $orders = $this->orderService->getAllUserOrders($userId);
-        return response()->json($orders->toArray(request()));
+        return $this->response($orders->toArray(request()));
     }
 
     /**
@@ -42,6 +44,28 @@ class OrderController extends Controller
     {
         $orderStoreDTO = OrderTransformer::toOrderStoreDTO(Auth::loginUsingId(2)->getAuthIdentifier());
         $this->orderService->create($orderStoreDTO, $orderStoreRequest);
-        return response()->json(['created']);
+        return $this->response([], ResponseAlias::HTTP_CREATED, 'Created');
+    }
+
+    /**
+     * @param int $orderId
+     * @param OrderUpdateRequest $orderUpdateRequest
+     * @return JsonResponse
+     */
+    public function update(int $orderId, OrderUpdateRequest $orderUpdateRequest): JsonResponse
+    {
+        $orderUpdateDTO = OrderTransformer::toOrderUpdateDTO($orderId, $orderUpdateRequest);
+        $this->orderService->updateById($orderId, $orderUpdateDTO);
+        return $this->response([], ResponseAlias::HTTP_OK, 'Updated');
+    }
+
+    /**
+     * @param int $orderId
+     * @return JsonResponse
+     */
+    public function delete(int $orderId): JsonResponse
+    {
+        $this->orderService->deleteById($orderId);
+        return $this->response([], ResponseAlias::HTTP_NO_CONTENT, 'Deleted');
     }
 }

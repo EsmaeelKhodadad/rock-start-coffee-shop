@@ -27,6 +27,7 @@ class CreateOrderItemsTable extends Migration
             $table->unsignedTinyInteger('number')->default(1);
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('order_id')->references('id')->on((new Order())->getTable());
             $table->foreign('product_id')->references('id')->on((new Product())->getTable());
