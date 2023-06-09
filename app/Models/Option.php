@@ -24,7 +24,7 @@ class Option extends AppModel
     /**
      * @return BelongsToMany
      */
-    public function options(): BelongsToMany
+    public function customizations(): BelongsToMany
     {
         return $this->belongsToMany(Customization::class);
     }

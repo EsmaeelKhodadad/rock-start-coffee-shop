@@ -2,18 +2,18 @@
 
 namespace App\Repositories\MySQL\Implementations;
 
-use App\Models\User;
+use App\Models\Option;
 use App\Repositories\Base\BaseRepository;
-use App\Repositories\MySQL\Interfaces\UserMySQLRepositoryInterface;
+use App\Repositories\MySQL\Interfaces\OptionMySQLRepositoryInterface;
 
-class UserMySQLRepository extends BaseRepository implements UserMySQLRepositoryInterface
+class OptionMySQLRepository extends BaseRepository implements OptionMySQLRepositoryInterface
 {
     /**
-     * @param User $user
+     * @param Option $option
      */
-    public function __construct(User $user)
+    public function __construct(Option $option)
     {
-        parent::__construct($user);
+        parent::__construct($option);
     }
 
     /**

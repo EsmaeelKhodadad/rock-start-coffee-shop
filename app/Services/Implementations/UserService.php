@@ -35,4 +35,14 @@ class UserService implements UserServiceInterface
         }
         return UserTransformer::modelToUserViewDTO($user);
     }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function doesIdExist(int $id):bool
+    {
+        $user = $this->userMySQLRepository->getbyId($id);
+        return $user instanceof User;
+    }
 }

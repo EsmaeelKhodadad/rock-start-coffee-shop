@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('creator_id');
             $table->string('title')->unique();
             $table->boolean('is_active')->default(true);
-            $table->string('price')->default((string)Product::CONSTANT_PRICE);
+            $table->unsignedInteger('price')->default(Product::CONSTANT_PRICE);
             $table->timestamps();
 
             $table->foreign('creator_id')->references('id')->on((new User())->getTable());

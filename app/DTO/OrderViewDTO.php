@@ -16,6 +16,10 @@ class OrderViewDTO extends BaseDTO
      */
     private $status;
     /**
+     * @var null|int
+     */
+    private $totalPrice;
+    /**
      * @var null|Carbon
      */
     private $createdAt;
@@ -111,6 +115,24 @@ class OrderViewDTO extends BaseDTO
     public function setUpdatedAt(?Carbon $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTotalPrice(): ?int
+    {
+        return $this->totalPrice;
+    }
+
+    /**
+     * @param int|null $totalPrice
+     * @return $this
+     */
+    public function setTotalPrice(?int $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
         return $this;
     }
 }

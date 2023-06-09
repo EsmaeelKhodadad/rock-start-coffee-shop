@@ -29,12 +29,6 @@ class Product extends AppModel
      * @var string[]
      */
     protected $guarded = ['id'];
-    /**
-     * @var string[]
-     */
-    protected $casts = [
-        'price' => 'int',
-    ];
 
     /**
      * @return BelongsToMany

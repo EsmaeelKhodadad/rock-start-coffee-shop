@@ -20,7 +20,7 @@ class OrderItemResource extends JsonResource
             'id' => $this->id,
             'human_readable_order' => $this->human_readable_order,
             'number' => $this->number,
-            'price' => $this->price,
+            'price' => $this->total_price,
         ];
     }
 }

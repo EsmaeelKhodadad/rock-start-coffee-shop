@@ -31,6 +31,10 @@ class OrderItemViewDTO extends BaseDTO
      */
     private $number;
     /**
+     * @var int
+     */
+    private $price;
+    /**
      * @var null|Carbon
      */
     private $createdAt;
@@ -180,6 +184,24 @@ class OrderItemViewDTO extends BaseDTO
     public function setUpdatedAt(?Carbon $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int $price
+     * @return $this
+     */
+    public function setPrice(int $price): self
+    {
+        $this->price = $price;
         return $this;
     }
 }

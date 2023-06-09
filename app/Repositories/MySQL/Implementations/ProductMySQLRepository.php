@@ -22,6 +22,19 @@ class ProductMySQLRepository extends BaseRepository implements ProductMySQLRepos
      */
     public function getAllWithCustomizationsAndOptions(): LengthAwarePaginator
     {
-        return $this->model::active()->with(['customizations', 'customizations.options'])->paginate(10);
+        return $this->model->active()->with(['customizations' => static function ($query) {
+            $query->active();
+        }, 'customizations.options' => static function ($query) {
+            $query->active();
+        }])->paginate(10);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function getById(int $id)
+    {
+        return $this->model->active()->where('id', $id)->first();
     }
 }

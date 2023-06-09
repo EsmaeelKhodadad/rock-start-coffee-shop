@@ -8,8 +8,11 @@ use App\Models\Order;
 use App\Repositories\MySQL\Interfaces\OrderMySQLRepositoryInterface;
 use App\Requests\OrderStoreRequest;
 use App\Resources\V1\OrderViewResource;
+use App\Services\Interfaces\CustomizationServiceInterface;
+use App\Services\Interfaces\OptionServiceInterface;
 use App\Services\Interfaces\OrderItemServiceInterface;
 use App\Services\Interfaces\OrderServiceInterface;
+use App\Services\Interfaces\ProductServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Transformers\OrderTransformer;
 use http\Exception\RuntimeException;
@@ -36,7 +39,11 @@ class OrderService implements OrderServiceInterface
      * @param OrderItemServiceInterface $orderItemService
      * @param UserServiceInterface $userService
      */
-    public function __construct(OrderMySQLRepositoryInterface $orderMySQLRepository, OrderItemServiceInterface $orderItemService, UserServiceInterface $userService)
+    public function __construct(
+        OrderMySQLRepositoryInterface $orderMySQLRepository,
+        OrderItemServiceInterface $orderItemService,
+        UserServiceInterface $userService
+    )
     {
         $this->orderMySQLRepository = $orderMySQLRepository;
         $this->orderItemService = $orderItemService;
@@ -86,6 +93,10 @@ class OrderService implements OrderServiceInterface
     {
         try {
             DB::beginTransaction();
+            $doesUserExist = $this->userService->doesIdExist($orderStoreDTO->getUserId());
+            if(!$doesUserExist){
+                throw new RuntimeException('User not found!');
+            }
             $orderPreparedModel = OrderTransformer::orderStoreDTOToModel($orderStoreDTO);
             $orderModel = $this->orderMySQLRepository->create($orderPreparedModel);
             $orderViewDTO = OrderTransformer::orderModelToViewDTO($orderModel);

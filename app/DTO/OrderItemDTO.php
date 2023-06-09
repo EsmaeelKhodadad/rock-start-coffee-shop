@@ -24,6 +24,10 @@ class OrderItemDTO extends BaseDTO
      * @var int
      */
     private $number;
+    /**
+     * @var null|int
+     */
+    private $totalPrice;
 
     /**
      * @return int
@@ -112,6 +116,24 @@ class OrderItemDTO extends BaseDTO
     public function setNumber(int $number): self
     {
         $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTotalPrice(): ?int
+    {
+        return $this->totalPrice;
+    }
+
+    /**
+     * @param int|null $totalPrice
+     * @return $this
+     */
+    public function setTotalPrice(?int $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
         return $this;
     }
 }

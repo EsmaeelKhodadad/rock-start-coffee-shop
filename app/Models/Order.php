@@ -21,10 +21,6 @@ class Order extends AppModel
     use HasFactory;
 
     /**
-     * @var string[]
-     */
-    protected $guarded = ['id'];
-    /**
      * @var string
      */
     public const STATUS_WAITING = 'waiting';
@@ -49,6 +45,14 @@ class Order extends AppModel
         self::STATUS_READY,
         self::STATUS_DELIVERED,
     ];
+    /**
+     * @var string[]
+     */
+    protected $guarded = ['id'];
+    /**
+     * @var string[]
+     */
+    protected $appends = ['total_price'];
 
     /**
      * @return BelongsTo

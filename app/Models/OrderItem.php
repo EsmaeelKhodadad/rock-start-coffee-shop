@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read Customization $customization
  * @property-read Option $option
  * @property-read string $human_readable_order
- * @property-read int $price
+ * @property-read int $total_price
  */
 class OrderItem extends AppModel
 {
@@ -29,11 +29,11 @@ class OrderItem extends AppModel
     /**
      * @var string[]
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'total_price'];
     /**
      * @var string[]
      */
-    protected $appends = ['human_readable_order', 'price'];
+    protected $appends = ['human_readable_order'];
 
     /**
      * @return string
@@ -49,9 +49,12 @@ class OrderItem extends AppModel
     /**
      * @return int
      */
-    public function getPriceAttribute():int
+    public function getTotalPriceAttribute(): int
     {
-        return ($this->product->price * $this->number);
+        if ($this->product) {
+            return ($this->product->price * $this->number);
+        }
+        return 0;
     }
 
     /**
