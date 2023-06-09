@@ -2,7 +2,6 @@
 
 namespace App\Resources\V1;
 
-use App\Models\Customization;
 use App\Models\Option;
 use Illuminate\Http\Resources\Json\JsonResource;
 

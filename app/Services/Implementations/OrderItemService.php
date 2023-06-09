@@ -70,9 +70,16 @@ class OrderItemService implements OrderItemServiceInterface
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTotalPriceByOrderId(int $orderId): int
     {
-        return $this->orderItemMySQLRepository->getPriceSumByOrderId($orderId);
+        try {
+            return $this->orderItemMySQLRepository->getPriceSumByOrderId($orderId);
+        } catch (\Throwable $throwable) {
+            throw new \RuntimeException($throwable->getMessage());
+        }
     }
 
     /**
@@ -80,6 +87,10 @@ class OrderItemService implements OrderItemServiceInterface
      */
     public function deleteByOrderId(int $orderId): void
     {
-        $this->orderItemMySQLRepository->deleteByOrderId($orderId);
+        try {
+            $this->orderItemMySQLRepository->deleteByOrderId($orderId);
+        } catch (\Throwable $throwable) {
+            throw new \RuntimeException($throwable->getMessage());
+        }
     }
 }

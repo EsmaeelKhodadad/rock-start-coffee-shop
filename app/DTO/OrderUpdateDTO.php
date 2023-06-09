@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class OrderUpdateDTO
+class OrderUpdateDTO extends BaseDTO
 {
     /**
      * @var null|string

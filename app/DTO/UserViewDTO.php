@@ -4,7 +4,7 @@ namespace App\DTO;
 
 use Carbon\Carbon;
 
-class UserViewDTO
+class UserViewDTO extends BaseDTO
 {
     /**
      * @var int
