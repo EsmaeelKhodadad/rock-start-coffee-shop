@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use http\Exception\RuntimeException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -32,10 +34,13 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(static function (Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'payload' => [],
+            ], ResponseAlias::HTTP_BAD_REQUEST, ['Content-Type' => 'application/json',]);
         });
     }
 }

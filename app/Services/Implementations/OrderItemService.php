@@ -10,7 +10,6 @@ use App\Services\Interfaces\OptionServiceInterface;
 use App\Services\Interfaces\OrderItemServiceInterface;
 use App\Services\Interfaces\ProductServiceInterface;
 use App\Transformers\OrderTransformer;
-use http\Exception\RuntimeException;
 
 class OrderItemService implements OrderItemServiceInterface
 {
@@ -61,13 +60,13 @@ class OrderItemService implements OrderItemServiceInterface
             $doesCustomizationIdExist = $this->customizationService->doesIdExist($orderItemDTO->getCustomizationId());
             $doesOptionIdExist = $this->optionService->doesIdExist($orderItemDTO->getOptionId());
             if (!$doesProductIdExist || !$doesCustomizationIdExist || !$doesOptionIdExist) {
-                throw new RuntimeException('One or more id do not exist!');
+                throw new \RuntimeException('One or more id do not exist!');
             }
             $orderItemPreparedModel = OrderTransformer::orderItemStoreDTOToModel($orderItemDTO);
             $orderItemModel = $this->orderItemMySQLRepository->create($orderItemPreparedModel);
             return OrderTransformer::orderItemModelToViewDTO($orderItemModel);
         } catch (\Throwable $throwable) {
-            throw new RuntimeException($throwable->getMessage());
+            throw new \RuntimeException($throwable->getMessage());
         }
     }
 
@@ -79,7 +78,7 @@ class OrderItemService implements OrderItemServiceInterface
     /**
      * @inheritDoc
      */
-    public function deleteByOrderId(int $orderId):void
+    public function deleteByOrderId(int $orderId): void
     {
         $this->orderItemMySQLRepository->deleteByOrderId($orderId);
     }

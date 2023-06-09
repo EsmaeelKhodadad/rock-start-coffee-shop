@@ -19,16 +19,24 @@ class OrderItemMySQLRepository extends BaseRepository implements OrderItemMySQLR
     /**
      * @inheritDoc
      */
-    public function getPriceSumByOrderId(int $orderId):int
+    public function getPriceSumByOrderId(int $orderId): int
     {
-        return $this->model->where('order_id', $orderId)->with('product', 'customization', 'option')->get()->sum('total_price');
+        return $this->model
+            ->setConnection($this->connection)
+            ->where('order_id', $orderId)
+            ->with('product', 'customization', 'option')
+            ->get()
+            ->sum('total_price');
     }
 
     /**
      * @inheritDoc
      */
-    public function deleteByOrderId(int $orderId):void
+    public function deleteByOrderId(int $orderId): void
     {
-        $this->model->where('order_id', $orderId)->delete();
+        $this->model
+            ->setConnection($this->connection)
+            ->where('order_id', $orderId)
+            ->delete();
     }
 }

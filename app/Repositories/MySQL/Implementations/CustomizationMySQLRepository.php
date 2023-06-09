@@ -5,6 +5,7 @@ namespace App\Repositories\MySQL\Implementations;
 use App\Models\Customization;
 use App\Repositories\Base\BaseRepository;
 use App\Repositories\MySQL\Interfaces\CustomizationMySQLRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class CustomizationMySQLRepository extends BaseRepository implements CustomizationMySQLRepositoryInterface
 {
@@ -18,10 +19,14 @@ class CustomizationMySQLRepository extends BaseRepository implements Customizati
 
     /**
      * @param int $id
-     * @return mixed
+     * @return Model|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?Model
     {
-        return $this->model->active()->where('id', $id)->first();
+        return $this->model
+            ->setConnection($this->connection)
+            ->active()
+            ->where('id', $id)
+            ->first();
     }
 }

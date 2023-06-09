@@ -5,6 +5,7 @@ namespace App\Repositories\MySQL\Implementations;
 use App\Models\User;
 use App\Repositories\Base\BaseRepository;
 use App\Repositories\MySQL\Interfaces\UserMySQLRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class UserMySQLRepository extends BaseRepository implements UserMySQLRepositoryInterface
 {
@@ -18,10 +19,14 @@ class UserMySQLRepository extends BaseRepository implements UserMySQLRepositoryI
 
     /**
      * @param int $id
-     * @return mixed
+     * @return Model|null
      */
-    public function getById(int $id)
+    public function getById(int $id): ?Model
     {
-        return $this->model->active()->where('id', $id)->first();
+        return $this->model
+            ->setConnection($this->connection)
+            ->active()
+            ->where('id', $id)
+            ->first();
     }
 }

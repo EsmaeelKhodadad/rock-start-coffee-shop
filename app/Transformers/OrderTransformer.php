@@ -123,6 +123,11 @@ class OrderTransformer
             ->setStatus($orderUpdateRequest->status);
     }
 
+    /**
+     * @param Order $order
+     * @param OrderUpdateDTO $orderUpdateDTO
+     * @return Model
+     */
     public static function orderUpdateDTOToModel(Order $order, OrderUpdateDTO $orderUpdateDTO): Model
     {
         $order->status = $orderUpdateDTO->getStatus() ?? $order->status;

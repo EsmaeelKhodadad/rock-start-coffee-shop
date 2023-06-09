@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +12,18 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @method alive()
+ * @property int $id
+ * @property string $user_type
+ * @property string $name
+ * @property string $email
+ * @property Carbon|null $email_verified_at
+ * @property string $password
+ * @property bool $is_active
+ * @property string $remember_token
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read HasMany $orders
+ * @property-read HasMany $products
  */
 class User extends Authenticatable
 {

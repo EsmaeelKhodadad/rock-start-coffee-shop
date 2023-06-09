@@ -11,4 +11,10 @@ interface UserServiceInterface
      * @return UserViewDTO
      */
     public function getById(int $userId): UserViewDTO;
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function doesIdExist(int $id): bool;
 }

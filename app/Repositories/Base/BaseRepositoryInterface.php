@@ -14,13 +14,13 @@ interface BaseRepositoryInterface
 
     /**
      * @param int $id
-     * @return mixed
+     * @return Model|null
      */
-    public function getById(int $id);
+    public function getById(int $id): ?Model;
 
     /**
      * @param Model $model
      * @return Model
      */
-    public function update(Model $model):Model;
+    public function update(Model $model): Model;
 }

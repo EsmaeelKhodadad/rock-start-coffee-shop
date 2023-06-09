@@ -59,28 +59,30 @@ class OrderService implements OrderServiceInterface
             $orders = $this->orderMySQLRepository->getAllByUserId($userViewDTo->getId());
             return OrderViewResource::collection($orders);
         } catch (\Throwable $throwable) {
-            throw new RuntimeException($throwable->getMessage());
+            throw new \RuntimeException($throwable->getMessage());
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTotalPriceById(int $orderId): int
     {
         try {
             return $this->orderItemService->getTotalPriceByOrderId($orderId);
         } catch (\Throwable $throwable) {
-            throw new RuntimeException($throwable->getMessage());
+            throw new \RuntimeException($throwable->getMessage());
         }
     }
 
     /**
-     * @param int $orderId
-     * @return OrderViewDTO
+     * @inheritDoc
      */
     public function getById(int $orderId): OrderViewDTO
     {
         $order = $this->orderMySQLRepository->getById($orderId);
         if (!$order instanceof Order) {
-            throw new RuntimeException('Order not found!');
+            throw new \RuntimeException('Order not found!');
         }
         return OrderTransformer::orderModelToViewDTO($order);
     }
@@ -94,7 +96,7 @@ class OrderService implements OrderServiceInterface
             DB::beginTransaction();
             $doesUserExist = $this->userService->doesIdExist($orderStoreDTO->getUserId());
             if (!$doesUserExist) {
-                throw new RuntimeException('User not found!');
+                throw new \RuntimeException('User not found!');
             }
             $orderPreparedModel = OrderTransformer::orderStoreDTOToModel($orderStoreDTO);
             $orderModel = $this->orderMySQLRepository->create($orderPreparedModel);
@@ -112,41 +114,41 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int $orderId
-     * @return void
+     * @inheritDoc
      */
-    public function deleteById(int $orderId):void
+    public function deleteById(int $orderId): void
     {
         try {
             DB::beginTransaction();
             $userId = Auth::loginUsingId(2)->getAuthIdentifier();
-            $order = $this->orderMySQLRepository->getByOrderIdAndUserId($orderId,$userId);
-            if(!$order instanceof Order){
-                throw new RuntimeException('Order not found!');
+            $order = $this->orderMySQLRepository->getByOrderIdAndUserId($orderId, $userId);
+            if (!$order instanceof Order) {
+                throw new \RuntimeException('Order not found!');
             }
             $this->orderMySQLRepository->deleteById($orderId);
             $this->orderItemService->deleteByOrderId($orderId);
             DB::commit();
         } catch (\Throwable $throwable) {
             DB::rollBack();
-            throw new RuntimeException($throwable->getMessage());
+            throw new \RuntimeException($throwable->getMessage());
         }
     }
 
-    public function updateById(int $orderId, OrderUpdateDTO $orderUpdateDTO)
+    /**
+     * @inheritDoc
+     */
+    public function updateById(int $orderId, OrderUpdateDTO $orderUpdateDTO): OrderViewDTO
     {
-        try{
+        try {
             $order = $this->orderMySQLRepository->getById($orderId);
-            if(!$order instanceof Order){
+            if (!$order instanceof Order) {
                 throw new RuntimeException('Order not found!');
             }
-            $orderUpdatedModel = OrderTransformer::orderUpdateDTOToModel($order,$orderUpdateDTO);
+            $orderUpdatedModel = OrderTransformer::orderUpdateDTOToModel($order, $orderUpdateDTO);
             $orderUpdatedModel = $this->orderMySQLRepository->update($orderUpdatedModel);
             return OrderTransformer::orderModelToViewDTO($orderUpdatedModel);
+        } catch (\Throwable $throwable) {
+            throw new \RuntimeException($throwable->getMessage());
         }
-        catch(\Throwable $throwable){
-            throw new RuntimeException($throwable->getMessage());
-        }
-
     }
 }

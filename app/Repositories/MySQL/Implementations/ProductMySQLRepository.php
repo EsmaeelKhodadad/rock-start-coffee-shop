@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Repositories\Base\BaseRepository;
 use App\Repositories\MySQL\Interfaces\ProductMySQLRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductMySQLRepository extends BaseRepository implements ProductMySQLRepositoryInterface
 {
@@ -18,23 +19,29 @@ class ProductMySQLRepository extends BaseRepository implements ProductMySQLRepos
     }
 
     /**
-     * @return void
+     * @inheritDoc
      */
     public function getAllWithCustomizationsAndOptions(): LengthAwarePaginator
     {
-        return $this->model->active()->with(['customizations' => static function ($query) {
-            $query->active();
-        }, 'customizations.options' => static function ($query) {
-            $query->active();
-        }])->paginate(10);
+        return $this->model
+            ->setConnection($this->connection)
+            ->active()
+            ->with(['customizations' => static function ($query) {
+                $query->active();
+            }, 'customizations.options' => static function ($query) {
+                $query->active();
+            }])->paginate(10);
     }
 
     /**
-     * @param int $id
-     * @return mixed
+     * @inheritDoc
      */
-    public function getById(int $id)
+    public function getById(int $id): ?Model
     {
-        return $this->model->active()->where('id', $id)->first();
+        return $this->model
+            ->setConnection($this->connection)
+            ->active()
+            ->where('id', $id)
+            ->first();
     }
 }

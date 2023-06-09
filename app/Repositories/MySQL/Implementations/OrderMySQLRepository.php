@@ -23,6 +23,7 @@ class OrderMySQLRepository extends BaseRepository implements OrderMySQLRepositor
     public function getAllByUserId(int $userId): LengthAwarePaginator
     {
         return $this->model
+            ->setConnection($this->connection)
             ->where('user_id', $userId)
             ->with('user', 'orderItems', 'orderItems.product')
             ->paginate(10);
@@ -33,7 +34,11 @@ class OrderMySQLRepository extends BaseRepository implements OrderMySQLRepositor
      */
     public function getByOrderIdAndUserId(int $orderId, int $userId)
     {
-        return $this->model->where('id', $orderId)->where('user_id', $userId)->first();
+        return $this->model
+            ->setConnection($this->connection)
+            ->where('id', $orderId)
+            ->where('user_id', $userId)
+            ->first();
     }
 
     /**
@@ -42,6 +47,9 @@ class OrderMySQLRepository extends BaseRepository implements OrderMySQLRepositor
      */
     public function deleteById(int $orderId): void
     {
-        $this->model->where('id', $orderId)->delete();
+        $this->model
+            ->setConnection($this->connection)
+            ->where('id', $orderId)
+            ->delete();
     }
 }
